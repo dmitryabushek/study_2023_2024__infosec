@@ -42,21 +42,21 @@
 
 11. Обратитесь к файлу через веб-сервер, введя в браузере адрес http://127.0.0.1/test.html. Убедитесь, что файл был успешно отображён.
 
-![Создание html-файла и доступ по http]((https://github.com/dmitryabushek/study_2023_2024__infosec/blob/main/lab6/src/lab6_5.png)
+![Создание html-файла и доступ по http](https://github.com/dmitryabushek/study_2023_2024__infosec/blob/main/lab6/src/lab6_5.png)
 
 12. Изучите справку man httpd_selinux и выясните, какие контексты файлов определены для httpd. Сопоставьте их с типом файла test.html. Проверить контекст файла можно командой ls -Z. ls -Z /var/www/html/test.html. Основным контекстом является httpd_sys_content_t, его мы и увидели в выводе команды.
 
 13. Измените контекст файла /var/www/html/test.html с httpd_sys_content_t на любой другой, к которому процесс httpd не должен иметь доступа, например, на samba_share_t: chcon -t samba_share_t /var/www/html/test.html ls -Z /var/www/html/test.html После этого проверьте, что контекст поменялся. 
 
-!Изменение контекста](i(https://github.com/dmitryabushek/study_2023_2024__infosec/blob/main/lab6/src/lab6_6.png)
+!Изменение контекста](https://github.com/dmitryabushek/study_2023_2024__infosec/blob/main/lab6/src/lab6_6.png)
 
 14. Попробуйте ещё раз получить доступ к файлу через веб-сервер, введя в браузере адрес http://127.0.0.1/test.html. Вы должны получить сообщение об ошибке: Forbidden You don't have permission to access /test.html on this server. При изменении контекста файл стал считаться чужим для http и программа не может его прочитать. (рис. @fig:006)
 
-![Ошибка доступа после изменения контекста]((https://github.com/dmitryabushek/study_2023_2024__infosec/blob/main/lab6/src/lab6_7.png)
+![Ошибка доступа после изменения контекста](https://github.com/dmitryabushek/study_2023_2024__infosec/blob/main/lab6/src/lab6_7.png)
 
 15. Проанализируйте ситуацию. Почему файл не был отображён, если права доступа позволяют читать этот файл любому пользователю? ls -l /var/www/html/test.html Просмотрите log-файлы веб-сервера Apache. Также просмотрите системный лог-файл: tail /var/log/messages Если в системе окажутся запущенными процессы setroubleshootd и audtd, то вы также сможете увидеть ошибки, аналогичные указанным выше, в файле /var/log/audit/audit.log. Проверьте это утверждение самостоятельно. (рис. @fig:007)
 
-![Лог ошибок]((https://github.com/dmitryabushek/study_2023_2024__infosec/blob/main/lab6/src/lab6_8.png)
+![Лог ошибок](https://github.com/dmitryabushek/study_2023_2024__infosec/blob/main/lab6/src/lab6_8.png)
 
 С дальнейшим выполнением лабораторной работы у меня были проблемы, так как config файла не существовало (хотя такого не может быть), а порт 81 был занят сторонним процессом. Однако я изучил, как было бы необходимо менять порт в конфиг файле.
 
